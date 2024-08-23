@@ -1,0 +1,104 @@
+/* Base Button Style */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #2980b9; /* Darker shade of the primary color for hover effect */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+}
+
+.button:active {
+    background-color: #1f5a8d; /* Even darker shade for active state */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(0);
+}
+
+.button.primary {
+    background-color: var(--primary-color);
+}
+
+.button.secondary {
+    background-color: var(--secondary-color);
+}
+
+.button.primary:hover {
+    background-color: #2980b9;
+}
+
+.button.secondary:hover {
+    background-color: #34495e;
+}
+
+.button.outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.button.outline:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* For rounded buttons */
+.button.rounded {
+    border-radius: 50px;
+}
+
+/* For small buttons */
+.button.small {
+    padding: 5px 15px;
+    font-size: 14px;
+}
+
+/* For large buttons */
+.button.large {
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+     /* Ο υπόλοιπος CSS κώδικας παραμένει ίδιος */
+
+     .button {
+        display: inline-block;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .button.primary {
+        background-color: var(--primary-color);
+        color: #fff;
+    }
+
+    .button.primary:hover {
+        background-color: #2980b9;
+    }
+
+    .button.secondary {
+        background-color: #fff;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+    }
+
+    .button.secondary:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+    }

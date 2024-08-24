@@ -19,7 +19,7 @@
         }
         
         .left-navbar {
-            width: 250px;
+            width: 200px;
             background-color: #ffffff;
             color: var(--text-color);
             height: 100vh;
@@ -91,9 +91,9 @@
         }
         
         button {
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 500;
+            padding: 5px 10px;
+            font-size: 13px;
+            font-weight: 400;
             border: none;
             border-radius: var(--border-radius);
             cursor: pointer;
@@ -210,4 +210,9 @@
                 flex-direction: column;
             }
         }
- 
+ /* Style for larger checkboxes */
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary-color); /* Optional: adjust the checkbox color */
+}

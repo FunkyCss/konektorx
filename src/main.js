@@ -4,7 +4,7 @@ import { populateTable, appendToTable } from './ui/table.js';
 import { initializeExportButton } from './ui/export.js';
 import { showOrderDetails, initializeModalListeners } from './ui/modal.js';
 
-const orderService = new OrderService('https://website.com', 'ck_', 'cs_');
+const orderService = new OrderService('https://www.yourwebsite.com', 'ck_', 'cs_');
 let allOrders = [];
 let currentPage = 1;
 const ordersPerPage = 10;

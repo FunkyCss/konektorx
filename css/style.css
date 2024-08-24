@@ -4,7 +4,8 @@
     --lighter-gray: #f1f3f5;
     --dark-gray: #6c757d;
     --white: #ffffff;
-  }
+    --light-green: #7bed9f; /* Light green color */
+}
   
   body {
     font-family: 'Roboto', sans-serif;
@@ -51,10 +52,56 @@
     font-size: 12px;
   }
   
+ 
   .main-container {
     margin-left: 80px;
     padding-top: 60px; /* Adjusted to account for fixed top bar */
+    height: calc(100vh - 60px); /* Full viewport height minus top bar */
+    overflow: hidden; /* Prevent scrolling on the main container */
   }
+  
+  .content-wrapper {
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px; /* Minimal border radius */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin: 20px;
+    height: calc(100% - 40px); /* Full height minus margins */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent scrolling on the content wrapper */
+  }
+  
+  .search-and-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .table-container {
+    flex-grow: 1;
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  #data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  
+  #data-table th, #data-table td {
+    padding: 15px;
+    text-align: left;
+  }
+  
+  #data-table th {
+    position: sticky;
+    top: 0;
+    background-color: var(--white);
+    z-index: 10;
+  }
+  
   
   .top-bar {
     position: fixed;
@@ -136,6 +183,24 @@
     border: 1px solid var(--primary-blue);
   }
   
+  button.third {
+    background-color: var(--light-green);
+    color: var(--dark-gray); /* Use a contrasting color for text */
+    border: 1px solid var(--light-green);
+}
+
+button.primary:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  }
+  
+  button.secondary:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  }
+  
+  button.third:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  }
+  
   #data-table {
     width: 100%;
     border-collapse: separate;
@@ -207,3 +272,41 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+  .table-container {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    flex-grow: 1;
+    overflow-y: auto; /* Enable vertical scrolling */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: var(--primary-blue) var(--lighter-gray); /* For Firefox */
+  }
+  
+  /* Webkit browsers (Chrome, Safari, newer versions of Edge) */
+  .table-container::-webkit-scrollbar {
+    width: 8px; /* Very thin scrollbar */
+  }
+  
+  .table-container::-webkit-scrollbar-track {
+    background: var(--lighter-gray);
+    border-radius: 4px;
+  }
+  
+  .table-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-blue);
+    border-radius: 4px;
+    border: 2px solid var(--lighter-gray);
+  }
+  
+
+  .selected-count-container {
+    margin-top: 10px;
+    font-size: 16px;
+}
+/* Adjust the size of the checkbox inputs */
+/* Basic styling for all checkboxes */
+input[type="checkbox"] {
+    width: 18px; /* Adjust width as needed */
+    height: 18px; /* Adjust height as needed */
+    /* Additional styling */
+    accent-color: var(--primary-blue); /* Optional: Change the checkbox color */
+}

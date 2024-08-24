@@ -9,22 +9,31 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="left-navbar" id="leftNavbar">
+     <div class="left-navbar" id="leftNavbar">
         <a href="#" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a>
         <a href="#"><i class="fas fa-credit-card"></i> <span>Πληρωμές</span></a>
         <a href="#"><i class="fas fa-undo"></i> <span>Επιστροφές</span></a>
     </div>
-    
+
+
+    <div class="top-bar">
+        <div class="logo">Jerry Cherry</div>
+        <div class="notifications">
+            <i class="fas fa-bell"></i>
+            <i class="fas fa-user"></i>
+        </div>
+    </div>
+
     <div class="main-container">
-        <div class="search-filter">
-            <input type="text" placeholder="Αναζήτηση..." id="mainSearch">
-        </div>
-        
-        <div id="bulkActionsContainer">
-            <button id="refreshButton" class="primary">Refresh Orders</button>
-            <button id="bulkCompleteButton" class="primary">Mark Selected as Completed</button>
-            <button id="exportExcelButton" class="secondary">Export Selected to Excel</button>
-        </div>
+        <div class="content-wrapper">
+            <div class="search-and-actions">
+                <input type="text" placeholder="Αναζήτηση..." id="mainSearch">
+                <div class="actions">
+                    <button id="refreshButton" class="primary">Refresh</button>
+                    <button id="exportExcelButton" class="secondary">Export to Excel</button>
+                    <button id="bulkCompleteButton" class="primary">Complete</button>
+                </div>
+            </div>
  
         <table id="data-table">
             <thead>
@@ -45,6 +54,7 @@
         </table>
         <!-- <button id="refreshButton" class="refresh-orders">Refresh Orders</button> -->
         <button id="loadMoreButton" class="load-more-orders">Load More</button>
+     </div>
     </div>
 
     <div id="modal" class="modal">

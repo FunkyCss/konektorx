@@ -1,13 +1,13 @@
 import { OrderService } from './services/order-service.js';
 import { initializeSearch } from './ui/search.js';
-import { populateTable, appendToTable } from './ui/table.js';
+import { populateTable, appendToTable, initializeDateSorting } from './ui/table.js';
 import { initializeExportButton } from './ui/export.js';
 import { showOrderDetails, initializeModalListeners } from './ui/modal.js';
 
 const orderService = new OrderService('https://www.jerrycherry.gr', 'ck_a4e1db48bb5e9c23fb59739b914396a345f277f7', 'cs_037cf018732a6d6d031cb0f95690ada434c37e51');
 let allOrders = [];
 let currentPage = 1;
-const ordersPerPage = 10;
+const ordersPerPage = 40;
 
 async function initialize() {
   try {
@@ -15,15 +15,16 @@ async function initialize() {
     allOrders = await orderService.loadOrders(currentPage, ordersPerPage);
     console.log('Processing orders loaded:', allOrders);
     populateTable(allOrders);
+    initializeDateSorting(allOrders, populateTable);
     
     initializeSearch(allOrders, populateTable);
     initializeModalListeners();
     initializeExportButton(() => allOrders);
     
-    addEventListenerWithErrorHandling('refreshButton', 'click', refreshOrders);
-    addEventListenerWithErrorHandling('loadMoreButton', 'click', loadMoreOrders);
-    addEventListenerWithErrorHandling('selectAll', 'change', toggleSelectAll);
-    addEventListenerWithErrorHandling('bulkCompleteButton', 'click', bulkMarkAsCompleted);
+    document.getElementById('refreshButton').addEventListener('click', refreshOrders);
+    document.getElementById('loadMoreButton').addEventListener('click', loadMoreOrders);
+    document.getElementById('selectAll').addEventListener('change', toggleSelectAll);
+    document.getElementById('bulkCompleteButton').addEventListener('click', bulkMarkAsCompleted);
 
     window.showDetails = (index) => showOrderDetails(allOrders[index]);
     window.markAsCompleted = markAsCompleted;

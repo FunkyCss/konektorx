@@ -6,15 +6,12 @@ export function populateTable(orders) {
     return;
   }
 
-  const fragment = document.createDocumentFragment();
+  tableBody.innerHTML = '';
 
   orders.forEach((order, index) => {
     const row = createTableRow(order, index);
-    fragment.appendChild(row);
+    tableBody.appendChild(row);
   });
-
-  tableBody.innerHTML = '';
-  tableBody.appendChild(fragment);
 }
 
 function createTableRow(order, index) {
@@ -25,6 +22,7 @@ function createTableRow(order, index) {
   
   row.innerHTML = `
     <td><input type="checkbox" class="order-checkbox" data-order-id="${order.id}"></td>
+    <td>${order.id}</td>
     <td>${orderDate.toLocaleDateString('el-GR')}</td>
     <td>${customerName}</td>
     <td>${products}</td>
@@ -52,4 +50,27 @@ export function appendToTable(newOrders) {
     const row = createTableRow(order, tableBody.children.length + index);
     tableBody.appendChild(row);
   });
+}
+
+export function sortOrdersByDate(orders, ascending = true) {
+  return orders.sort((a, b) => {
+    const dateA = new Date(a.date_created);
+    const dateB = new Date(b.date_created);
+    return ascending ? dateA - dateB : dateB - dateA;
+  });
+}
+
+// Function to initialize date sorting
+export function initializeDateSorting(orders, updateTableCallback) {
+  const dateHeader = document.querySelector('th:nth-child(3)'); // Assuming date is the third column
+  if (dateHeader) {
+    dateHeader.style.cursor = 'pointer';
+    let ascending = true;
+    dateHeader.addEventListener('click', () => {
+      const sortedOrders = sortOrdersByDate(orders, ascending);
+      updateTableCallback(sortedOrders);
+      ascending = !ascending;
+      dateHeader.textContent = `Date ${ascending ? '▲' : '▼'}`;
+    });
+  }
 }

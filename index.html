@@ -34,7 +34,7 @@
 
 
     <div class="top-bar">
-        <div class="logo">Konektor</div>
+        <div class="logo">Konektor Lite</div>
         <div class="notifications">
             <i class="fas fa-bell"></i>
             <i class="fas fa-user"></i>
@@ -56,25 +56,23 @@
 
             <div class="table-container">
                 
-                <table id="data-table">
-                    <thead class="bottom-shadow">
-                        <tr>
-                            <th class="checkbox-column"><input type="checkbox" id="selectAll"></th>
-                            <th>Order ID</th>
-                            <th>Name</th>
-                            <th>Order Number</th>
-                            <th>Products</th>
-                            <th>Payment</th>
-                            <th>Amount</th>
-                            <th>Actions</th>
-                        </tr>
+                <table id="data-table" class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
+                        <th>Order Date</th>
+                        <th>Customer</th>
+                        <th>Products</th>
+                        <th>Status</th>
+                        <th>Payment Method</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                      </tr>
                     </thead>
-
                     <tbody>
-                        <!-- Table rows will be dynamically added here -->
+                      <!-- Table rows will be populated here -->
                     </tbody>
-                    
-                </table>
+                  </table>
             </div>
 
             <div class="selected-count-container">

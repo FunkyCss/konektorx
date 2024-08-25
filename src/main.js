@@ -4,21 +4,21 @@ import { populateTable, appendToTable } from './ui/table.js';
 import { initializeExportButton } from './ui/export.js';
 import { showOrderDetails, initializeModalListeners } from './ui/modal.js';
 
-const orderService = new OrderService('https://www.yourwebsite.com', 'ck_', 'cs_');
+const orderService = new OrderService('https://yourdomain.com', 'ck_', 'cs_');
 let allOrders = [];
 let currentPage = 1;
-const ordersPerPage = 10;
+const ordersPerPage = 30;
 
 async function initialize() {
   try {
     console.log('Starting initialization...');
     allOrders = await orderService.loadOrders(currentPage, ordersPerPage);
-    console.log('Orders loaded:', allOrders);
+    console.log('Processing orders loaded:', allOrders);
     populateTable(allOrders);
     
     initializeSearch(allOrders, populateTable);
     initializeModalListeners();
-    initializeExportButton(() => allOrders.filter(order => order.selected));
+    initializeExportButton(() => allOrders);
     
     document.getElementById('refreshButton').addEventListener('click', refreshOrders);
     document.getElementById('loadMoreButton').addEventListener('click', loadMoreOrders);
@@ -89,7 +89,7 @@ async function markAsCompleted(orderId) {
     try {
       await orderService.markOrderAsCompleted(orderId);
       alert(`Order ${orderId} has been marked as completed.`);
-      refreshOrders();
+      refreshOrders(); // Refresh the order list to remove the completed order
     } catch (error) {
       console.error(`Failed to mark order ${orderId} as completed:`, error);
       showErrorMessage(`Failed to mark order ${orderId} as completed. Please try again.`);
@@ -103,4 +103,3 @@ function showErrorMessage(message) {
 
 // Wait for the DOM to be fully loaded before initializing
 document.addEventListener('DOMContentLoaded', initialize);
-initializeExportButton(() => allOrders);

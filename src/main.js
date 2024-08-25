@@ -4,7 +4,7 @@ import { populateTable, appendToTable, initializeDateSorting } from './ui/table.
 import { initializeExportButton } from './ui/export.js';
 import { showOrderDetails, initializeModalListeners } from './ui/modal.js';
 
-const orderService = new OrderService('https://www.jerrycherry.gr', 'ck_a4e1db48bb5e9c23fb59739b914396a345f277f7', 'cs_037cf018732a6d6d031cb0f95690ada434c37e51');
+const orderService = new OrderService('https://..', 'ck_', 'cs_');
 let allOrders = [];
 let currentPage = 1;
 const ordersPerPage = 40;

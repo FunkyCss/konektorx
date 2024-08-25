@@ -6,12 +6,15 @@ export function populateTable(orders) {
     return;
   }
 
-  tableBody.innerHTML = '';
+  const fragment = document.createDocumentFragment();
 
   orders.forEach((order, index) => {
     const row = createTableRow(order, index);
-    tableBody.appendChild(row);
+    fragment.appendChild(row);
   });
+
+  tableBody.innerHTML = '';
+  tableBody.appendChild(fragment);
 }
 
 function createTableRow(order, index) {

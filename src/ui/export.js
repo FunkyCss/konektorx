@@ -62,7 +62,7 @@ function exportToExcel(orders) {
     'ΤΗΛ': order.billing.phone,
     'ΠΑΡΑΤΗΡΗΣΕΙΣ': order.customer_note,
     'ΚΛΕΙΔΙ - ΑΡ. ΠΑΡΑΓΓΕΛΙΑΣ': order.id,
-    'ΑΝΤΙΚΑΤΑΒΟΛΗ': order.payment_method_title
+    'ΑΝΤΙΚΑΤΑΒΟΛΗ': order.payment_method_title.toLowerCase() === 'αντικαταβολή' ? order.total : ''
   }));
 
   // Create a new workbook and worksheet

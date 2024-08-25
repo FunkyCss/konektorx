@@ -4,10 +4,10 @@ import { populateTable, appendToTable } from './ui/table.js';
 import { initializeExportButton } from './ui/export.js';
 import { showOrderDetails, initializeModalListeners } from './ui/modal.js';
 
-const orderService = new OrderService('https://yourdomain.com', 'ck_', 'cs_');
+const orderService = new OrderService('https://www.jerrycherry.gr', 'ck_a4e1db48bb5e9c23fb59739b914396a345f277f7', 'cs_037cf018732a6d6d031cb0f95690ada434c37e51');
 let allOrders = [];
 let currentPage = 1;
-const ordersPerPage = 30;
+const ordersPerPage = 10;
 
 async function initialize() {
   try {
@@ -20,10 +20,10 @@ async function initialize() {
     initializeModalListeners();
     initializeExportButton(() => allOrders);
     
-    document.getElementById('refreshButton').addEventListener('click', refreshOrders);
-    document.getElementById('loadMoreButton').addEventListener('click', loadMoreOrders);
-    document.getElementById('selectAll').addEventListener('change', toggleSelectAll);
-    document.getElementById('bulkCompleteButton').addEventListener('click', bulkMarkAsCompleted);
+    addEventListenerWithErrorHandling('refreshButton', 'click', refreshOrders);
+    addEventListenerWithErrorHandling('loadMoreButton', 'click', loadMoreOrders);
+    addEventListenerWithErrorHandling('selectAll', 'change', toggleSelectAll);
+    addEventListenerWithErrorHandling('bulkCompleteButton', 'click', bulkMarkAsCompleted);
 
     window.showDetails = (index) => showOrderDetails(allOrders[index]);
     window.markAsCompleted = markAsCompleted;
@@ -33,6 +33,22 @@ async function initialize() {
     console.error('Initialization failed:', error);
     console.error('Error stack:', error.stack);
     showErrorMessage('Failed to initialize the application. Please try again. Error: ' + error.message);
+  }
+}
+
+function addEventListenerWithErrorHandling(elementId, event, handler) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.addEventListener(event, async (e) => {
+      try {
+        await handler(e);
+      } catch (error) {
+        console.error(`Error in ${elementId} ${event} handler:`, error);
+        showErrorMessage(`An error occurred. Please try again.`);
+      }
+    });
+  } else {
+    console.error(`Element with id '${elementId}' not found`);
   }
 }
 

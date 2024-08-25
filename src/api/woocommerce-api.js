@@ -25,5 +25,24 @@ export class WooCommerceAPI {
     }
   }
 
-  // ... rest of the class remains the same ...
+  async updateOrderStatus(orderId, status) {
+    const url = new URL(`${this.baseUrl}/orders/${orderId}`);
+    url.searchParams.append('consumer_key', this.consumerKey);
+    url.searchParams.append('consumer_secret', this.consumerSecret);
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error(`Error updating order ${orderId}:`, error);
+      throw error;
+    }
+  }
 }

@@ -37,17 +37,18 @@ KonektorX Lite is a lightweight version of the KonektorX plugin, designed to fet
    - [SheetJS](https://sheetjs.com/) for Excel exports.
    - [Font Awesome](https://fontawesome.com/) for icons.
    - [Google Fonts (Roboto)](https://fonts.google.com/specimen/Roboto) for modern typography.
+   - [PrintJS](https://printjs.crabbly.com/) for Printing to PDF or Printer.
 
    These dependencies are included via CDN in the HTML.
 
-4. **WooCommerce API Connection:**
+5. **WooCommerce API Connection:**
 
    To connect the project to WooCommerce:
    
    - Make sure your WooCommerce site has the REST API enabled.
    - Configure the API credentials (Consumer Key and Consumer Secret) for accessing the orders.
 
-5. **Running the Project:**
+6. **Running the Project:**
 
    Once the files are set up and the WooCommerce API connection is configured, you can run the project locally in a browser. It will fetch orders from your WooCommerce store and allow you to manipulate them through the dashboard.
 

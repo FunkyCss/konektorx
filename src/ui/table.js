@@ -16,28 +16,25 @@ export function populateTable(orders) {
 
 function createTableRow(order, index) {
   const row = document.createElement('tr');
-  const customerName = `${order.billing.first_name} ${order.billing.last_name}`;
-  const products = order.line_items.map(item => `${item.name} (x${item.quantity})`).join(', ');
   const orderDate = new Date(order.date_created);
   
   row.innerHTML = `
     <td><input type="checkbox" class="order-checkbox" data-order-id="${order.id}"></td>
     <td>${order.id}</td>
     <td>${orderDate.toLocaleDateString('el-GR')}</td>
-    <td>${customerName}</td>
-    <td>${products}</td>
+    <td>${order.billing.first_name} ${order.billing.last_name}</td>
+    <td>${order.line_items.map(item => `${item.name} (x${item.quantity})`).join(', ')}</td>
     <td>${order.status}</td>
     <td>${order.payment_method_title}</td>
     <td>€${parseFloat(order.total).toFixed(2)}</td>
     <td>
-      <button class="btn btn-primary btn-sm mr-2" onclick="window.showDetails(${index})">View</button>
-      <button class="btn btn-success btn-sm" onclick="window.markAsCompleted(${order.id})">Complete</button>
+     <button onclick="showDetails(${index})" class="btn btn-primary btn-sm">View</button>
+    <button onclick="markAsCompleted(${order.id})" class="btn btn-success btn-sm">Complete</button>
     </td>
   `;
   
   return row;
 }
-
 export function appendToTable(newOrders) {
   const tableBody = document.querySelector('#data-table tbody') || document.querySelector('#ordersTable tbody');
   

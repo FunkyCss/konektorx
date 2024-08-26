@@ -98,8 +98,8 @@
   #data-table th {
     position: sticky;
     top: 0;
-    background-color: var(--white);
-    z-index: 10;
+    /* background-color: var(--white);
+    z-index: 10; */
   }
   
   
@@ -309,4 +309,65 @@ input[type="checkbox"] {
     height: 18px; /* Adjust height as needed */
     /* Additional styling */
     accent-color: var(--primary-blue); /* Optional: Change the checkbox color */
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Print styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-content, #printable-content * {
+    visibility: visible;
+  }
+  #printable-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
+  h2 {
+    font-size: 18pt;
+    margin-bottom: 10pt;
+  }
+  p, li {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  strong {
+    font-weight: bold;
+  }
 }

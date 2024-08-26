@@ -1,10 +1,10 @@
+import { showOrderDetails, initializeModalListeners, printOrders } from './ui/print.js';
 import { OrderService } from './services/order-service.js';
 import { initializeSearch } from './ui/search.js';
 import { populateTable, appendToTable, initializeDateSorting } from './ui/table.js';
 import { initializeExportButton } from './ui/export.js';
-import { showOrderDetails, initializeModalListeners } from './ui/modal.js';
 
-const orderService = new OrderService('https://..', 'ck_', 'cs_');
+const orderService = new OrderService('https://www.yourwebsite.com', 'ck_', 'cs_');
 let allOrders = [];
 let currentPage = 1;
 const ordersPerPage = 40;
@@ -21,10 +21,11 @@ async function initialize() {
     initializeModalListeners();
     initializeExportButton(() => allOrders);
     
-    document.getElementById('refreshButton').addEventListener('click', refreshOrders);
-    document.getElementById('loadMoreButton').addEventListener('click', loadMoreOrders);
-    document.getElementById('selectAll').addEventListener('change', toggleSelectAll);
-    document.getElementById('bulkCompleteButton').addEventListener('click', bulkMarkAsCompleted);
+    addEventListenerWithErrorHandling('refreshButton', 'click', refreshOrders);
+    addEventListenerWithErrorHandling('loadMoreButton', 'click', loadMoreOrders);
+    addEventListenerWithErrorHandling('selectAll', 'change', toggleSelectAll);
+    addEventListenerWithErrorHandling('bulkCompleteButton', 'click', bulkMarkAsCompleted);
+    addEventListenerWithErrorHandling('printSelectedButton', 'click', printSelectedOrders);
 
     window.showDetails = (index) => showOrderDetails(allOrders[index]);
     window.markAsCompleted = markAsCompleted;
@@ -116,6 +117,20 @@ async function markAsCompleted(orderId) {
 
 function showErrorMessage(message) {
   alert(message);
+}
+
+function printSelectedOrders() {
+  const selectedOrderCheckboxes = document.querySelectorAll('.order-checkbox:checked');
+  const selectedOrderIds = Array.from(selectedOrderCheckboxes).map(checkbox => checkbox.dataset.orderId);
+  
+  if (selectedOrderIds.length === 0) {
+    alert('Please select at least one order to print.');
+    return;
+  }
+  
+  const selectedOrders = allOrders.filter(order => selectedOrderIds.includes(order.id.toString()));
+  
+  printOrders(selectedOrders);
 }
 
 // Wait for the DOM to be fully loaded before initializing

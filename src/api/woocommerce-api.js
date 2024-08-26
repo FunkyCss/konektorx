@@ -5,14 +5,13 @@ export class WooCommerceAPI {
     this.consumerSecret = consumerSecret;
   }
 
-  async getOrders(page = 1, perPage = 10, status = '') {
+  async getOrders(params = {}) {
     const url = new URL(`${this.baseUrl}/orders`);
     url.searchParams.append('consumer_key', this.consumerKey);
     url.searchParams.append('consumer_secret', this.consumerSecret);
-    url.searchParams.append('page', page);
-    url.searchParams.append('per_page', perPage);
-    if (status) {
-      url.searchParams.append('status', status);
+    
+    for (const [key, value] of Object.entries(params)) {
+      url.searchParams.append(key, value);
     }
 
     try {
@@ -36,8 +35,9 @@ export class WooCommerceAPI {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status: status }),
       });
+
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       return await response.json();
     } catch (error) {

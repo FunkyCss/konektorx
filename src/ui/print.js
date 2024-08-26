@@ -55,20 +55,26 @@ export function initializeModalListeners() {
     };
 }
 export function printOrders(orders) {
+    const logoURL = '/assets/logo/logo.png';
     const printContent = orders.map(order => {
-        const isCOD = order.payment_method === 'cod'; // Check if payment method is Cash on Delivery
-
-        return `
-        <div class="order-details">
-            <h2>Παραγγελία #${order.number}</h2>
-            <p><strong>Πελάτης:</strong> ${order.billing.first_name} ${order.billing.last_name}</p>
-            <p><strong>Διεύθυνση:</strong> ${order.billing.address_1}, ${order.billing.city}, ${order.billing.postcode}</p>
-            <p><strong>Τηλέφωνο:</strong> ${order.billing.phone}</p>
-            <p><strong>Ποσό προς Είσπραξη:</strong> ${isCOD ? `€${parseFloat(order.total).toFixed(2)}` : 'Ελεύθερο'}</p>
-            <p><strong>Μέθοδος Πληρωμής:</strong> ${isCOD ? 'Αντικαταβολή' : 'Μη Αντικαταβολή'}</p>
-            <p><strong>Σημείωση Πελάτη:</strong> ${order.customer_note || 'Δεν υπάρχει'}</p>
-        </div>
-        `;
+        try {
+            const isCOD = order.payment_method === 'cod';
+            return `
+            <div class="order-details">
+                <img src="${logoURL}" alt="Logo" style="width: 150px; margin-bottom: 20px;">
+                <h2>Παραγγελία #${order.number || 'N/A'}</h2>
+                <p><strong>Πελάτης:</strong> ${order.billing?.first_name || ''} ${order.billing?.last_name || ''}</p>
+                <p><strong>Διεύθυνση:</strong> ${order.billing?.address_1 || ''}, ${order.billing?.city || ''}, ${order.billing?.postcode || ''}</p>
+                <p><strong>Τηλέφωνο:</strong> ${order.billing?.phone || 'N/A'}</p>
+                <p><strong>Ποσό προς Είσπραξη:</strong> ${isCOD ? `€${parseFloat(order.total || 0).toFixed(2)}` : 'Ελεύθερο'}</p>
+                <p><strong>Μέθοδος Πληρωμής:</strong> ${isCOD ? 'Αντικαταβολή' : 'Μη Αντικαταβολή'}</p>
+                <p><strong>Σημείωση Πελάτη:</strong> ${order.customer_note || 'Δεν υπάρχει'}</p>
+            </div>
+            `;
+        } catch (error) {
+            console.error(`Error processing order: ${order.id || 'Unknown'}`, error);
+            return `<div class="order-details error">Error processing order ${order.id || 'Unknown'}</div>`;
+        }
     }).join('');
 
     printJS({
@@ -99,6 +105,10 @@ export function printOrders(orders) {
                 }
                 strong {
                     color: #000;
+                }
+                img {
+                    display: block;
+                    margin: 0 auto 10px;
                 }
             }
         `

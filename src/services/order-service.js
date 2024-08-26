@@ -7,22 +7,29 @@ export class OrderService {
 
   async loadOrders(page = 1, perPage = 10) {
     try {
-      const response = await this.api.getOrders(page, perPage);
-      // Filter processing orders on the client side
+      const response = await this.api.getOrders({
+        page: page,
+        per_page: perPage,
+        status: 'processing'
+      });
       return response.filter(order => order.status === 'processing');
     } catch (error) {
       console.error('Error fetching orders:', error);
-      throw error;
+      throw new Error(`Failed to load orders: ${error.message}`);
     }
   }
 
   async markOrderAsCompleted(orderId) {
     try {
       const response = await this.api.updateOrderStatus(orderId, 'completed');
-      return response;
+      if (response && response.status === 'completed') {
+        return response;
+      } else {
+        throw new Error('Order status update failed');
+      }
     } catch (error) {
       console.error(`Failed to mark order ${orderId} as completed:`, error);
-      throw error;
+      throw new Error(`Failed to mark order as completed: ${error.message}`);
     }
   }
 }

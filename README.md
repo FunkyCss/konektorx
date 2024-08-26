@@ -9,6 +9,7 @@ KonektorX Lite is a lightweight version of the KonektorX plugin, designed to fet
 - **Search and Filter**: Quickly find orders using a real-time search bar.
 - **Excel Export**: Export selected orders to Excel using [SheetJS](https://sheetjs.com/).
 - **Order Details**: View detailed information for each order, including products, customer info, payment method, and total amount.
+- **Print Order**: Print selected orders to PDF or Printer with the right information out of the box using [Print.js] {https://printjs.crabbly.com/}
 
 ## Upcoming Features
 

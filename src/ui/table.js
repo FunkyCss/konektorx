@@ -28,8 +28,8 @@ function createTableRow(order, index) {
     <td>${order.payment_method_title}</td>
     <td>€${parseFloat(order.total).toFixed(2)}</td>
     <td>
-     <button onclick="showDetails(${index})" class="btn btn-primary btn-sm">View</button>
-    <button onclick="markAsCompleted(${order.id})" class="btn btn-success btn-sm">Complete</button>
+     <button onclick="showDetails(${index})" class="btn btn-primary btn-sm primary">View</button>
+    <button onclick="markAsCompleted(${order.id})" class="btn btn-success btn-sm secondary">Complete</button>
     </td>
   `;
   

@@ -54,35 +54,54 @@ export function initializeModalListeners() {
         }
     };
 }
-
 export function printOrders(orders) {
-    // Prepare the orders data for printing
-    const printContent = orders.map(order => `
-        <div class="order-details" style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 20px;">
-            <h2>Order #${order.number}</h2>
-            <p><strong>Customer:</strong> ${order.billing.first_name} ${order.billing.last_name}</p>
-            <p><strong>Address:</strong> ${order.billing.address_1}, ${order.billing.city}, ${order.billing.postcode}</p>
-            <p><strong>Phone:</strong> ${order.billing.phone}</p>
-            <p><strong>Email:</strong> ${order.billing.email}</p>
-            <h3>Products:</h3>
-            <ul>
-                ${order.line_items.map(item => `<li>${item.name} (x${item.quantity})</li>`).join('')}
-            </ul>
-            <p><strong>Total Amount:</strong> ${order.total}</p>
-            <p><strong>Payment Method:</strong> ${order.payment_method_title}</p>
-            <p><strong>Customer Note:</strong> ${order.customer_note || 'N/A'}</p>
-        </div>
-    `).join('');
+    const printContent = orders.map(order => {
+        const isCOD = order.payment_method === 'cod'; // Check if payment method is Cash on Delivery
 
-    // Use Print.js to print the orders
+        return `
+        <div class="order-details">
+            <h2>Παραγγελία #${order.number}</h2>
+            <p><strong>Πελάτης:</strong> ${order.billing.first_name} ${order.billing.last_name}</p>
+            <p><strong>Διεύθυνση:</strong> ${order.billing.address_1}, ${order.billing.city}, ${order.billing.postcode}</p>
+            <p><strong>Τηλέφωνο:</strong> ${order.billing.phone}</p>
+            <p><strong>Ποσό προς Είσπραξη:</strong> ${isCOD ? `€${parseFloat(order.total).toFixed(2)}` : 'Ελεύθερο'}</p>
+            <p><strong>Μέθοδος Πληρωμής:</strong> ${isCOD ? 'Αντικαταβολή' : 'Μη Αντικαταβολή'}</p>
+            <p><strong>Σημείωση Πελάτη:</strong> ${order.customer_note || 'Δεν υπάρχει'}</p>
+        </div>
+        `;
+    }).join('');
+
     printJS({
         printable: printContent,
         type: 'raw-html',
-        header: 'Order Details',
+        header: 'Λεπτομέρειες Παραγγελίας',
         style: `
-            .order-details { font-family: Arial, sans-serif; }
-            h2 { color: #333; }
-            ul { padding-left: 20px; }
+            @media print {
+                body {
+                    font-family: Arial, sans-serif;
+                    color: #000;
+                    background: #fff;
+                    margin: 0;
+                    padding: 0;
+                }
+                .order-details {
+                    margin-bottom: 20px;
+                    border-bottom: 1px solid #ccc;
+                    padding-bottom: 20px;
+                    page-break-after: always;
+                }
+                h2 {
+                    color: #333;
+                    margin: 0 0 10px;
+                }
+                p {
+                    margin: 5px 0;
+                }
+                strong {
+                    color: #000;
+                }
+            }
         `
     });
 }
+

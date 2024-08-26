@@ -73,7 +73,7 @@ We welcome contributions to help improve KonektorX Lite. If you'd like to add ne
 
 ## License
 
-KonektorX Lite is open-source software licensed under the [MIT License](LICENSE).
+KonektorX Lite is licensed under the [MIT License](Ανδρέας Μούτσης).
 
 ---
 

@@ -1,14 +1,6 @@
-import { updateSelectedCount } from './selections.js';
-
 export function populateTable(orders) {
-  const tableBody = document.querySelector('#data-table tbody') || document.querySelector('#ordersTable tbody');
-  
-  if (!tableBody) {
-    console.error('Table body not found. Make sure the table exists in the HTML.');
-    return;
-  }
-
   const selectedOrderIds = getSelectedOrderIds();
+  const tableBody = document.querySelector('#data-table tbody');
   tableBody.innerHTML = '';
 
   orders.forEach((order, index) => {
@@ -19,38 +11,10 @@ export function populateTable(orders) {
   restoreSelections(selectedOrderIds);
 }
 
-function createTableRow(order, index) {
-  const row = document.createElement('tr');
-  const orderDate = new Date(order.date_created);
-  
-  row.innerHTML = `
-    <td><input type="checkbox" class="order-checkbox" data-order-id="${order.id}"></td>
-    <td>${order.id}</td>
-    <td>${orderDate.toLocaleDateString('el-GR')}</td>
-    <td>${order.billing.first_name} ${order.billing.last_name}</td>
-    <td>${order.line_items.map(item => `${item.name} (x${item.quantity})`).join(', ')}</td>
-    <td>${order.status}</td>
-    <td>${order.payment_method_title}</td>
-    <td>€${parseFloat(order.total).toFixed(2)}</td>
-    <td>
-     <button onclick="showDetails(${index})" class="btn btn-primary btn-sm primary">View</button>
-    <button onclick="markAsCompleted(${order.id})" class="btn btn-success btn-sm secondary">Complete</button>
-    </td>
-  `;
-  
-  return row;
-}
-
 export function appendToTable(newOrders) {
-  const tableBody = document.querySelector('#data-table tbody') || document.querySelector('#ordersTable tbody');
-  
-  if (!tableBody) {
-    console.error('Table body not found. Make sure the table exists in the HTML.');
-    return;
-  }
-
   const selectedOrderIds = getSelectedOrderIds();
-
+  const tableBody = document.querySelector('#data-table tbody');
+  
   newOrders.forEach((order, index) => {
     const row = createTableRow(order, tableBody.children.length + index);
     tableBody.appendChild(row);
@@ -59,20 +23,39 @@ export function appendToTable(newOrders) {
   restoreSelections(selectedOrderIds);
 }
 
-function getSelectedOrderIds() {
+export function getSelectedOrderIds() {
   const selectedCheckboxes = document.querySelectorAll('.order-checkbox:checked');
   return Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.orderId);
 }
 
-function restoreSelections(selectedOrderIds) {
+export function restoreSelections(selectedOrderIds) {
   const checkboxes = document.querySelectorAll('.order-checkbox');
   checkboxes.forEach(checkbox => {
     if (selectedOrderIds.includes(checkbox.dataset.orderId)) {
       checkbox.checked = true;
     }
   });
-  updateSelectedCount();
 }
+
+function createTableRow(order, index) {
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td><input type="checkbox" class="order-checkbox" data-order-id="${order.id}"></td>
+    <td>${order.id}</td>
+    <td>${new Date(order.date_created).toLocaleDateString()}</td>
+    <td>${order.billing.first_name} ${order.billing.last_name}</td>
+    <td>${order.line_items.map(item => `${item.name} (x${item.quantity})`).join(', ')}</td>
+    <td>${order.status}</td>
+    <td>${order.payment_method_title}</td>
+    <td>€${parseFloat(order.total).toFixed(2)}</td>
+    <td>
+      <button onclick="showDetails(${index})" class="btn btn-primary btn-sm">View</button>
+      <button onclick="markAsCompleted(${order.id})" class="btn btn-success btn-sm">Complete</button>
+    </td>
+  `;
+  return row;
+}
+
 
 export function initializeDateSorting(orders, updateTableCallback) {
   const dateHeader = document.querySelector('th:nth-child(3)'); // Assuming date is the third column

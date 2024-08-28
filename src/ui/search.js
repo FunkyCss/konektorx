@@ -3,6 +3,7 @@ import { debounce } from '../utils/debounce.js';
 export function initializeSearch(orders, updateTableCallback) {
   const searchInput = document.getElementById('mainSearch');
   
+  // function to search orders 
   function searchOrders(searchTerm) {
     const terms = searchTerm.toLowerCase().split(' ').filter(term => term.length > 0);
     const filteredOrders = orders.filter(order => {

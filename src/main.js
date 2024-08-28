@@ -1,7 +1,13 @@
 import { showOrderDetails, initializeModalListeners, printOrders } from './ui/print.js';
 import { OrderService } from './services/order-service.js';
 import { initializeSearch } from './ui/search.js';
-import { populateTable, appendToTable, initializeDateSorting } from './ui/table.js';
+import { 
+  populateTable, 
+  appendToTable, 
+  initializeDateSorting, 
+  getSelectedOrderIds, 
+  restoreSelections 
+} from './ui/table.js';
 import { initializeExportButton } from './ui/export.js';
 import { initializeCheckboxListeners, updateSelectedCount } from './ui/selections.js';
 
@@ -10,6 +16,7 @@ let allOrders = [];
 let currentPage = 1;
 const ordersPerPage = 40;
 
+// Function to initialize the application
 async function initialize() {
   try {
     console.log('Starting initialization...');
@@ -38,6 +45,7 @@ async function initialize() {
   }
 }
 
+// function for addEventListenerWithErrorHandling
 function addEventListenerWithErrorHandling(elementId, event, handler) {
   const element = document.getElementById(elementId);
   if (element) {
@@ -54,6 +62,7 @@ function addEventListenerWithErrorHandling(elementId, event, handler) {
   }
 }
 
+// Function to refresh orders
 async function refreshOrders() {
   try {
     const freshOrders = await orderService.loadOrders(currentPage, ordersPerPage);
@@ -64,15 +73,16 @@ async function refreshOrders() {
   }
 }
 
-// Call this function periodically or add a refresh button
-setInterval(refreshOrders, 300000); // Refresh every 5 minutes
-
+// Function for loading more orders
 async function loadMoreOrders() {
   currentPage++;
   try {
+    const selectedOrderIds = getSelectedOrderIds(); // Add this line
     const newOrders = await orderService.loadOrders(currentPage, ordersPerPage);
-    updateOrdersList([...allOrders, ...newOrders]);
+    allOrders = [...allOrders, ...newOrders.filter(order => order.status !== 'completed')];
     appendToTable(newOrders.filter(order => order.status !== 'completed'));
+    restoreSelections(selectedOrderIds); // Add this line
+    updateSelectedCount();
   } catch (error) {
     console.error('Failed to load more orders:', error);
     showErrorMessage('Failed to load more orders. Please try again.');
@@ -80,12 +90,23 @@ async function loadMoreOrders() {
   }
 }
 
+// function to update the orders list
+function updateOrdersList(newOrders) {
+  const selectedOrderIds = getSelectedOrderIds(); // Add this line
+  allOrders = newOrders.filter(order => order.status !== 'completed');
+  populateTable(allOrders);
+  restoreSelections(selectedOrderIds); // Add this line
+  updateSelectedCount();
+}
+
+// function to toggle select all
 function toggleSelectAll() {
   const selectAllCheckbox = document.getElementById('selectAll');
   const checkboxes = document.querySelectorAll('.order-checkbox');
   checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
 }
 
+/// function to print selected orders
 async function bulkMarkAsCompleted() {
   const selectedOrders = Array.from(document.querySelectorAll('.order-checkbox:checked'))
     .map(checkbox => checkbox.dataset.orderId);
@@ -105,7 +126,7 @@ async function bulkMarkAsCompleted() {
     }
   }
 }
-
+// function to mark an order as completed
 async function markAsCompleted(orderId) {
   if (confirm("Are you sure this order is completed?")) {
     try {
@@ -120,15 +141,11 @@ async function markAsCompleted(orderId) {
   }
 }
 
-function updateOrdersList(newOrders) {
-  allOrders = newOrders.filter(order => order.status !== 'completed');
-  populateTable(allOrders);
-  updateSelectedCount();
-}
 function showErrorMessage(message) {
   alert(message);
 }
 
+// function to print selected orders
 function printSelectedOrders() {
   const selectedOrderCheckboxes = document.querySelectorAll('.order-checkbox:checked');
   const selectedOrderIds = Array.from(selectedOrderCheckboxes).map(checkbox => checkbox.dataset.orderId);
@@ -142,6 +159,10 @@ function printSelectedOrders() {
   
   printOrders(selectedOrders);
 }
+
+// Call this function periodically or add a refresh button
+//  refreshOrders(); // This will sync with the server
+setInterval(refreshOrders, 300000); // Refresh every 5 minutes
 
 // Wait for the DOM to be fully loaded before initializing
 document.addEventListener('DOMContentLoaded', initialize);

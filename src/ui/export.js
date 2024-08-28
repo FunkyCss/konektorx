@@ -16,14 +16,7 @@ export function initializeExportButton(getAllOrders) {
     const ordersToExport = selectedOrders.length > 0 ? selectedOrders : allOrders;
     console.log('Orders to export:', ordersToExport);
 
-    if (ordersToExport.length === 0) {
-      console.error('No orders to export after selection.');
-      alert('No orders selected for export. Exporting all orders.');
-      exportToExcel(allOrders);
-    } else {
-      console.log('Exporting selected orders...');
-      exportToExcel(ordersToExport);
-    }
+    exportToExcel(ordersToExport);
   });
 }
 
@@ -31,7 +24,7 @@ function getSelectedOrders(allOrders) {
   const selectedCheckboxes = document.querySelectorAll('.order-checkbox:checked');
   console.log('Selected checkboxes:', selectedCheckboxes);
 
-  const selectedIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+  const selectedIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.orderId);
   console.log('Selected IDs:', selectedIds);
 
   const selectedOrders = allOrders.filter(order => selectedIds.includes(order.id.toString()));
@@ -39,6 +32,7 @@ function getSelectedOrders(allOrders) {
 
   return selectedOrders;
 }
+
 
 function exportToExcel(orders) {
   // Define the column mapping

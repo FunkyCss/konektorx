@@ -3,6 +3,7 @@ import { OrderService } from './services/order-service.js';
 import { initializeSearch } from './ui/search.js';
 import { populateTable, appendToTable, initializeDateSorting } from './ui/table.js';
 import { initializeExportButton } from './ui/export.js';
+import { initializeCheckboxListeners, updateSelectedCount } from './ui/selections.js';
 
 const orderService = new OrderService('https://www.yourwebsite.com', 'ck_', 'cs_');
 let allOrders = [];
@@ -18,6 +19,7 @@ async function initialize() {
     initializeSearch(allOrders, populateTable);
     initializeModalListeners();
     initializeExportButton(() => allOrders);
+    initializeCheckboxListeners();
     
     addEventListenerWithErrorHandling('refreshButton', 'click', refreshOrders);
     addEventListenerWithErrorHandling('loadMoreButton', 'click', loadMoreOrders);
@@ -121,8 +123,8 @@ async function markAsCompleted(orderId) {
 function updateOrdersList(newOrders) {
   allOrders = newOrders.filter(order => order.status !== 'completed');
   populateTable(allOrders);
+  updateSelectedCount();
 }
-
 function showErrorMessage(message) {
   alert(message);
 }

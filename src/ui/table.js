@@ -1,3 +1,5 @@
+import { updateSelectedCount } from './selections.js';
+
 export function populateTable(orders) {
   const tableBody = document.querySelector('#data-table tbody') || document.querySelector('#ordersTable tbody');
   
@@ -6,12 +8,15 @@ export function populateTable(orders) {
     return;
   }
 
+  const selectedOrderIds = getSelectedOrderIds();
   tableBody.innerHTML = '';
 
   orders.forEach((order, index) => {
     const row = createTableRow(order, index);
     tableBody.appendChild(row);
   });
+
+  restoreSelections(selectedOrderIds);
 }
 
 function createTableRow(order, index) {
@@ -35,6 +40,7 @@ function createTableRow(order, index) {
   
   return row;
 }
+
 export function appendToTable(newOrders) {
   const tableBody = document.querySelector('#data-table tbody') || document.querySelector('#ordersTable tbody');
   
@@ -43,21 +49,31 @@ export function appendToTable(newOrders) {
     return;
   }
 
+  const selectedOrderIds = getSelectedOrderIds();
+
   newOrders.forEach((order, index) => {
     const row = createTableRow(order, tableBody.children.length + index);
     tableBody.appendChild(row);
   });
+
+  restoreSelections(selectedOrderIds);
 }
 
-export function sortOrdersByDate(orders, ascending = true) {
-  return orders.sort((a, b) => {
-    const dateA = new Date(a.date_created);
-    const dateB = new Date(b.date_created);
-    return ascending ? dateA - dateB : dateB - dateA;
+function getSelectedOrderIds() {
+  const selectedCheckboxes = document.querySelectorAll('.order-checkbox:checked');
+  return Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.orderId);
+}
+
+function restoreSelections(selectedOrderIds) {
+  const checkboxes = document.querySelectorAll('.order-checkbox');
+  checkboxes.forEach(checkbox => {
+    if (selectedOrderIds.includes(checkbox.dataset.orderId)) {
+      checkbox.checked = true;
+    }
   });
+  updateSelectedCount();
 }
 
-// Function to initialize date sorting
 export function initializeDateSorting(orders, updateTableCallback) {
   const dateHeader = document.querySelector('th:nth-child(3)'); // Assuming date is the third column
   if (dateHeader) {
@@ -70,4 +86,12 @@ export function initializeDateSorting(orders, updateTableCallback) {
       dateHeader.textContent = `Date ${ascending ? '▲' : '▼'}`;
     });
   }
+}
+
+function sortOrdersByDate(orders, ascending = true) {
+  return orders.sort((a, b) => {
+    const dateA = new Date(a.date_created);
+    const dateB = new Date(b.date_created);
+    return ascending ? dateA - dateB : dateB - dateA;
+  });
 }

@@ -1,16 +1,20 @@
-// File: src/ui/search.js
-
 import { debounce } from '../utils/debounce.js';
 
 export function initializeSearch(orders, updateTableCallback) {
   const searchInput = document.getElementById('mainSearch');
   
   function searchOrders(searchTerm) {
+    const terms = searchTerm.toLowerCase().split(' ').filter(term => term.length > 0);
     const filteredOrders = orders.filter(order => {
-      const customerName = `${order.billing.first_name} ${order.billing.last_name}`.toLowerCase();
-      const products = order.line_items.map(item => item.name.toLowerCase()).join(' ');
-      const searchString = `${customerName} ${order.id} ${products} ${order.payment_method_title.toLowerCase()} ${order.billing.email.toLowerCase()}`;
-      return searchString.includes(searchTerm.toLowerCase());
+      const searchString = `
+        ${order.billing.first_name.toLowerCase()}
+        ${order.billing.last_name.toLowerCase()}
+        ${order.id}
+        ${order.line_items.map(item => item.name.toLowerCase()).join(' ')}
+        ${order.payment_method_title.toLowerCase()}
+        ${order.billing.email.toLowerCase()}
+      `;
+      return terms.every(term => searchString.includes(term));
     });
     updateTableCallback(filteredOrders);
   }
